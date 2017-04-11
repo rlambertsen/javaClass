@@ -5,7 +5,9 @@
         <group>
             <file>file:/Users/rylan/NetBeansProjects/bankApp/src/java/NewCustomerServlet.java</file>
             <file>file:/Users/rylan/NetBeansProjects/bankApp/web/reset_password.jsp</file>
+            <file>file:/Users/rylan/NetBeansProjects/bankApp/src/java/User.java</file>
             <file>file:/Users/rylan/NetBeansProjects/bankApp/src/java/resetPassServlet.java</file>
+            <file>file:/Users/rylan/NetBeansProjects/bankApp/web/account_activity.jsp</file>
         </group>
     </open-files>
 </project-private>

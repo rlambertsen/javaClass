@@ -33,10 +33,10 @@ and open the template in the editor.
         </nav>
         <div class="container">
           <div class="row">
-              <c:if test="${user == !null}">
-                  <p>Hello ${user.firstName} ${user.lastName}</p>
+              <c:if test="${not empty user}">
+                  <p>Hello ${user.firstName} ${user.lastName} Welcome to the Titan Bank</p>
               </c:if>
-              <c:if test="${user == null}">
+              <c:if test="${empty user}">
                   <p>Not Logged In!!</p>
               </c:if>
           </div>
