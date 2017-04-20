@@ -1,3 +1,5 @@
+package User;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,10 +34,11 @@ public class LoginServlet extends HttpServlet {
         String success = "/TOBA/Account_activity.html";
         String fail = "/TOBA/Login_failure.html";
         
-        String email = request.getParameter("email");
+        String userName = request.getParameter("email");
         String pass = request.getParameter("password");
-        
-        if ("jsmith@toba.com".equals(email) && "letmein".equals(pass)) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user.userName.equals(userName) && user.password.equals(pass)) {
             response.sendRedirect(success);
         } else {
             response.sendRedirect(fail);

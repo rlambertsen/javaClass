@@ -1,3 +1,5 @@
+package User;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -41,30 +43,32 @@ public class NewCustomerServlet extends HttpServlet {
         String zip = request.getParameter("zip");
         String message;
         String url;
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPhone(phone);
-        user.setAddress(address);
-        user.setCity(city);
-        user.setState(state);
-        user.setZip(zip);
-        user.setUserName(lastName + zip);
-        user.setPassword("welcome1");
         
-        //save the user in the session
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+        
+        
         
         if (email == null || email.isEmpty() || firstName == null || lastName == null || phone == null || address == null || city == null || state == null || zip == null || firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || address.isEmpty() || city.isEmpty() || state.isEmpty() || zip.isEmpty()) {
             message = "Please fill out the entire form";
+            request.setAttribute("message", message);
             url = "/New_customer.jsp";
         } else {
-            message = "";
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setCity(city);
+            user.setState(state);
+            user.setZip(zip);
+            user.setUserName(lastName + zip);
+            user.setPassword("welcome1");
             url = "/Success.jsp";
+            //save the user in the session
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
         }
-        request.setAttribute("message", message);
+        
         getServletContext().getRequestDispatcher(url).forward(request, response);
     }
 }

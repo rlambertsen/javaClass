@@ -30,7 +30,7 @@
               <div class="col-lg-12">
                   <h2>New User Sign Up</h2>
               </div>
-            <form action="NewCustomerServlet" method="post">
+            <form action="User.NewCustomerServlet" method="post">
               <div class="col-sm-6">
                 
                 <div class="form-group">
