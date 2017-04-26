@@ -16,6 +16,10 @@
         <servlet-name>TransactionServlet</servlet-name>
         <servlet-class>User.TransactionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>transaction</servlet-name>
+        <servlet-class>User.transaction</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/User.LoginServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>TransactionServlet</servlet-name>
         <url-pattern>/User.TransactionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>transaction</servlet-name>
+        <url-pattern>/transaction</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

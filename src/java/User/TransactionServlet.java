@@ -6,84 +6,71 @@ package User;
  * and open the template in the editor.
  */
 
+import db.account;
+import db.trans;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author rylan
- */
-@WebServlet(urlPatterns = {"/TransactionServlet"})
 public class TransactionServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TransactionServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TransactionServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String url = "/Transaction.jsp";
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        String action = request.getParameter("action");
+        account checking = account.selectAccount(user, "CHECKING");
+        account savings = account.selectAccount(user, "SAVINGS");
+        String from = request.getParameter("From");
+        String to = request.getParameter("To");
+        String amount = request.getParameter("Amount");
+
+        if (action == null) {
+            action = "transfer";
+        }
+
+        if (action.equals("transfer")) {
+
+            if (from.equals(checking.getAccountType()) && to.equals(savings.getAccountType())) {
+                if (Double.parseDouble(amount) <= checking.getStartingBal()) {
+                    checking.Debit(Double.parseDouble(amount));
+                    savings.Credit(Double.parseDouble(amount));
+                    transaction trans1 = new trans(Double.parseDouble(amount), checking.getAccountType(), "Debit", checking);
+                    transaction trans2 = new transaction(Double.parseDouble(amount), savings.getAccountType(), "Credit", savings);
+                    trans.insert(trans1);
+                    trans.insert(trans2);
+                    checking.addTransaction(trans1);
+                    savings.addTransaction(trans2);
+                    url = "/Account_activity.jsp";
+                }
+            } else if (from.equals(savings.getAccountType()) && to.equals(checking.getAccountType())) {
+                if (Double.parseDouble(amount) <= savings.getStartingBal()) {
+                    savings.Debit(Double.parseDouble(amount));
+                    checking.Credit(Double.parseDouble(amount));
+                    Trans trans1 = new Trans(Double.parseDouble(amount), savings.getAccountType(), "Debit", savings);
+                    Trans trans2 = new Trans(Double.parseDouble(amount), checking.getAccountType(), "Credit", checking);
+                    TransDB.insert(trans1);
+                    TransDB.insert(trans2);
+                    savings.addTransaction(trans1);
+                    checking.addTransaction(trans2);
+                    url = "/Account_activity.jsp";
+
+                }
+            }
+            account.update(checking);
+            account.update(savings);
+
+        }
+
+        getServletContext()
+                .getRequestDispatcher(url)
+                .forward(request, response);
+
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

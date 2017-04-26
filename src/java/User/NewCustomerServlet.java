@@ -5,7 +5,8 @@ package User;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import db.account;
+import db.userdb;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -67,6 +68,11 @@ public class NewCustomerServlet extends HttpServlet {
             //save the user in the session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+            userdb.insert(user);
+            Accounts checking = new Accounts("CHECKING", 0.00, user);
+            Accounts savings = new Accounts("SAVINGS", 25.00, user);
+            account.insert(checking);
+            account.insert(savings);
         }
         
         getServletContext().getRequestDispatcher(url).forward(request, response);

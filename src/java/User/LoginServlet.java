@@ -6,6 +6,7 @@ package User;
  * and open the template in the editor.
  */
 
+import db.userdb;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,36 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author rylan
- */
 public class LoginServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-        String success = "/TOBA/Account_activity.html";
-        String fail = "/TOBA/Login_failure.html";
-        
-        String userName = request.getParameter("email");
-        String pass = request.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        String url = "/index.jsp";
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (user.userName.equals(userName) && user.password.equals(pass)) {
-            response.sendRedirect(success);
-        } else {
-            response.sendRedirect(fail);
+        String action = request.getParameter("action");
+        
+        if (action.equals("login")) {
+            String password = request.getParameter("password");
+            String userName = request.getParameter("userName");
+            if (userdb.userExists(userName)) {
+                User user = userdb.selectUser(userName);
+                session.setAttribute("user", user);
+                if (password.equals(user.getPassword()) && userName.equals(user.getUserName())) {
+                    url = "/Account_activity.jsp";
+                    
+                } else {
+                    url = "/Login_failure.jsp";
+                    session.invalidate();
+                }
+            }
         }
+
+        getServletContext()
+                .getRequestDispatcher(url)
+                .forward(request, response);
     }
 
 }
