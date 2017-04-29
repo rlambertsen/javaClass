@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Accounts implements Serializable {
+public class Account implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,10 +29,10 @@ public class Accounts implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TransactionServlet> transactions;
 
-    public Accounts() {
+    public Account() {
     }
 
-    public Accounts(String accountType, double startingBal, User accountOwner) {
+    public Account(String accountType, double startingBal, User accountOwner) {
         this.accountType = accountType;
         this.startingBal = startingBal;
         this.accountOwner = accountOwner;

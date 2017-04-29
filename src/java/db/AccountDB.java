@@ -5,16 +5,16 @@
  */
 package db;
 
-import User.Accounts;
+import User.Account;
 import User.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-public class account {
+public class AccountDB {
 
-    public static void insert(Accounts account) {
+    public static void insert(Account account) {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
         trans.begin();
@@ -29,7 +29,7 @@ public class account {
         }
     }
 
-    public static void update(Accounts account) {
+    public static void update(Account account) {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
         trans.begin();
@@ -44,15 +44,15 @@ public class account {
         }
     }
 
-    public static account selectAccount(User user, String account) {
+    public static Account selectAccount(User user, String Account) {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         String qString = "SELECT a FROM Account a "
                 + "WHERE a.accountOwner = :user AND a.accountType= :ACCOUNT";
-        TypedQuery<account> q = em.createQuery(qString, account.class);
+        TypedQuery<Account> q = em.createQuery(qString, Account.class);
         q.setParameter("user", user);
-        q.setParameter("ACCOUNT", account);
+        q.setParameter("ACCOUNT", Account);
         try {
-            account a = q.getSingleResult();
+            Account a = q.getSingleResult();
             return a;
         } catch (NoResultException e) {
             return null;

@@ -18,7 +18,7 @@
     </servlet>
     <servlet>
         <servlet-name>transaction</servlet-name>
-        <servlet-class>User.transaction</servlet-class>
+        <servlet-class>User.UserTransaction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>

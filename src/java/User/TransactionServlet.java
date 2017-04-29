@@ -6,8 +6,8 @@ package User;
  * and open the template in the editor.
  */
 
-import db.account;
-import db.trans;
+import db.AccountDB;
+import db.TransDB;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +25,8 @@ public class TransactionServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         String action = request.getParameter("action");
-        account checking = account.selectAccount(user, "CHECKING");
-        account savings = account.selectAccount(user, "SAVINGS");
+        Account checking = AccountDB.selectAccount(user, "CHECKING");
+        Account savings = AccountDB.selectAccount(user, "SAVINGS");
         String from = request.getParameter("From");
         String to = request.getParameter("To");
         String amount = request.getParameter("Amount");
@@ -41,10 +41,10 @@ public class TransactionServlet extends HttpServlet {
                 if (Double.parseDouble(amount) <= checking.getStartingBal()) {
                     checking.Debit(Double.parseDouble(amount));
                     savings.Credit(Double.parseDouble(amount));
-                    transaction trans1 = new trans(Double.parseDouble(amount), checking.getAccountType(), "Debit", checking);
-                    transaction trans2 = new transaction(Double.parseDouble(amount), savings.getAccountType(), "Credit", savings);
-                    trans.insert(trans1);
-                    trans.insert(trans2);
+                    UserTransaction trans1 = new UserTransaction(Double.parseDouble(amount), checking.getAccountType(), "Debit", checking);
+                    UserTransaction trans2 = new UserTransaction(Double.parseDouble(amount), savings.getAccountType(), "Credit", savings);
+                    TransDB.insert(trans1);
+                    TransDB.insert(trans2);
                     checking.addTransaction(trans1);
                     savings.addTransaction(trans2);
                     url = "/Account_activity.jsp";
@@ -53,8 +53,8 @@ public class TransactionServlet extends HttpServlet {
                 if (Double.parseDouble(amount) <= savings.getStartingBal()) {
                     savings.Debit(Double.parseDouble(amount));
                     checking.Credit(Double.parseDouble(amount));
-                    Trans trans1 = new Trans(Double.parseDouble(amount), savings.getAccountType(), "Debit", savings);
-                    Trans trans2 = new Trans(Double.parseDouble(amount), checking.getAccountType(), "Credit", checking);
+                    UserTransaction trans1 = new UserTransaction(Double.parseDouble(amount), savings.getAccountType(), "Debit", savings);
+                    UserTransaction trans2 = new UserTransaction(Double.parseDouble(amount), checking.getAccountType(), "Credit", checking);
                     TransDB.insert(trans1);
                     TransDB.insert(trans2);
                     savings.addTransaction(trans1);
@@ -63,8 +63,8 @@ public class TransactionServlet extends HttpServlet {
 
                 }
             }
-            account.update(checking);
-            account.update(savings);
+            AccountDB.update(checking);
+            AccountDB.update(savings);
 
         }
 

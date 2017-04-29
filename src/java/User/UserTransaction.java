@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class transaction implements Serializable{
+public class UserTransaction implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,13 +22,13 @@ public class transaction implements Serializable{
     private String accountType;
     private String type;
     @ManyToOne
-    private Accounts account;
+    private Account account;
     
 
-    public transaction() {
+    public UserTransaction() {
     }
 
-    public transaction(double amount, String accountType, String type, Accounts account) {
+    public UserTransaction(double amount, String accountType, String type, Account account) {
         this.amount = amount;
         this.account = account;
         this.type = type;
@@ -55,11 +55,11 @@ public class transaction implements Serializable{
         this.accountType = accountType;
     }
 
-    public Accounts getAccount() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setAccount(Accounts account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 
