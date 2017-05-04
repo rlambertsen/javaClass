@@ -13,16 +13,13 @@
         <link rel="stylesheet" href="../styles/main.css" type="text/css"/>
     </head>
     <body>
-       <header>
-            <img src="../images/tobalogo.PNG" alt="TOBA LOGO">
-        </header>
         <nav>
             <ul>
                 <li><a href="../index.jsp">LOGOUT</a></li>
             </ul>
         </nav>
         <section>
-            <h1>Monthly User Report</h1>
+            <h1>User Report</h1>
             <br>
             <br>
             <table>
@@ -37,8 +34,6 @@
                     <th>State</th>
                     <th>Zip Code</th>
                     <th>Email</th>
-               <!-- <th>Password</th> 
-                    <th>Salt</th> -->
                     <th>Registration Date</th>
                 </tr>
                 <sql:query var="rs" dataSource="jdbc/toba">
