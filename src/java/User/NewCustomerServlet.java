@@ -8,6 +8,9 @@ package User;
 import db.AccountDB;
 import db.userdb;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +45,13 @@ public class NewCustomerServlet extends HttpServlet {
         String city = request.getParameter("city");
         String state = request.getParameter("state");
         String zip = request.getParameter("zip");
+        String pass = request.getParameter("password");
+        String password = null;
+        try {
+            password = PassUtl.hashPassword(pass);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(NewCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String message;
         String url;
         
@@ -63,7 +73,7 @@ public class NewCustomerServlet extends HttpServlet {
             user.setState(state);
             user.setZip(zip);
             user.setUserName(lastName + zip);
-            user.setPassword("welcome1");
+            user.setPassword(password);
             url = "/Success.jsp";
             //save the user in the session
             HttpSession session = request.getSession();

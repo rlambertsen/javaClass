@@ -79,4 +79,14 @@ public class userdb {
         User u = selectUser(userName);   
         return u != null;
     }
+    
+    public static User getUserbyID(String userName) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        try {
+            User user = em.find(User.class, userName);
+            return user;
+        } finally {
+            em.close();
+        }
+    }
 }
