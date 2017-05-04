@@ -50,43 +50,4 @@ public class PassUtl {
         return hashPassword(password + salt);
     }
     
-    public static void checkPasswordStrength(String password) throws Exception {
-        if (password == null || password.trim().isEmpty()) {
-            throw new Exception("Password cannot be empty.");
-        } else if (password.length() < 8) {
-            throw new Exception("Password is to short. " +
-                    "Must be at least 8 characters long.");
-        }
-    }
-
-    public static boolean validatePassword(String password) {
-        try {
-            checkPasswordStrength(password);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-        return true;
-    }
-        
-    public static void main(String[] args) {
-        try {
-            System.out.println("Hash for 'me':\n"
-                    + hashPassword("sesame"));
-            System.out.println("Random salt:\n"
-                    + getSalt());
-            System.out.println("Salted hash for 'me':\n"
-                    + hashAndSaltPassword("me"));            
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex);
-        }
-        
-        try {
-            checkPasswordStrength("sesame1776");
-            System.out.println("Password is valid.");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }        
-    }
-    
 }
